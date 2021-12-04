@@ -1,0 +1,13 @@
+data_directory: 
+    data_path: /nfs/banner/ext01/shared/Hicardi/pkl
+dir_result: /home/destin/HiCardi/result
+
+
+# # banner
+#     data_path: /mnt/aitrics_ext/ext01/shared/Hicardi/pkl
+# dir_result: /mnt/aitrics_ext/ext01/destin/HiCardi/result
+
+
+# # strange
+#     data_path: /nfs/banner/ext01/shared/Hicardi/pkl
+# dir_result: /nfs/banner/ext01/destin/HiCardi/result
