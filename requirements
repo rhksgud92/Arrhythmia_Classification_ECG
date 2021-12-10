@@ -1,0 +1,11 @@
+numpy
+xmltodict
+torch
+torchvision
+torchaudio
+tqdm
+matplotlib
+scipy
+pyyaml
+tensorboardX
+scikit-learn

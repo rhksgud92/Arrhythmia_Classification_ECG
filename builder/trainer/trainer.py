@@ -11,7 +11,7 @@ import datetime
 from control.config import args
 
 
-def binary_classification(args, iteration, train_x, train_y, model, logger, device, scheduler=None, optimizer=None, criterion=None, pat_info=None, flow_type="train"):
+def binary_classification(args, iteration, train_x, train_y, model, logger, device, scheduler=None, optimizer=None, criterion=None, flow_type="train"):
     iter_loss = []
     val_loss = []
 
@@ -38,32 +38,6 @@ def binary_classification(args, iteration, train_x, train_y, model, logger, devi
         loss = criterion(logits, final_target)
         loss = torch.mean(loss)
         logger.evaluator.add_batch(np.array(final_target.cpu()), np.array(logits.cpu()))
-        # logger.evaluator.add_pat_info(pat_info)
-
-    if args.patient_time:
-        if args.data_type == "hourly":
-            max_int = 10 * 3600
-            time_unit = 3600
-        else:
-            max_int = 10 * 3600
-            time_unit = 1
-
-        probability = logits[:, 1]
-        prediction = (probability > args.threshold).int()
-        pred_time, patient_id = pat_info
-
-        for idx, positive in enumerate(final_target):
-            pat_id_str = str(patient_id[idx].numpy())
-            if (positive == 1) and (prediction[idx] == 1):
-                if pat_id_str not in logger.evaluator.pat_rank:
-                    logger.evaluator.pat_rank[pat_id_str] = max_int
-                time_sec = int(pred_time[idx] * time_unit)
-                if time_sec < logger.evaluator.pat_rank[pat_id_str]:
-                    logger.evaluator.pat_rank[pat_id_str] = time_sec
-            
-            elif positive == 1:
-                if pat_id_str not in logger.evaluator.pat_rank:
-                    logger.evaluator.pat_rank[pat_id_str] = max_int
 
     return model, loss
 

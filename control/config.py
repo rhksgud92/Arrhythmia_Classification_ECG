@@ -11,11 +11,15 @@ parser = argparse.ArgumentParser()
 # General Parameters
 parser.add_argument('--seed', type=int, default=0)
 parser.add_argument('--device', type=int, default=1, nargs='+')
-parser.add_argument('--cpu', default=False, action='store_true')
+parser.add_argument('--cpu', type=int, default=1)
 parser.add_argument('--gpus', type=int, default=1)
 parser.add_argument('--reset', default=False, action='store_true')
-parser.add_argument('--project-name', type=str, default="test")
+parser.add_argument('--project-name', type=str, default="small1")
 parser.add_argument('--checkpoint', '-cp', type=bool, default=False)
+
+# Data path setting
+parser.add_argument('--data-path', type=str, default="/nfs/banner/ext01/shared/ecg/converted_data_final")
+parser.add_argument('--dir-result', type=str, default="./result")
 
 # Training Parameters
 parser.add_argument('--epochs', type=int, default=100)
@@ -35,23 +39,17 @@ parser.add_argument('--momentum', '-mo', type=float, default=0.9, help='Momentum
 parser.add_argument('--weight_decay', '-wd', type=float, default=1e-6, help='Weight decay of optimizer')
 parser.add_argument('--patient-time', default=False)
 parser.add_argument('--threshold', type=float, default=0.5)
+parser.add_argument('--collate', type=int, default=2)
+parser.add_argument('--quantization', type=bool, default=False)
+parser.add_argument('--show-roc', type=bool, default=False)
 
-
-# Data Parameters
-parser.add_argument('--k-cross-fold-validation', type=int, default=4)
-parser.add_argument('--val-data-ratio', type=float, default=0.2)
-parser.add_argument('--test-data-ratio', type=float, default=0.2)
-parser.add_argument('--data-type', type=str, default="hourly", choices=["hourly", "signal"])
-parser.add_argument('--model-type', type=str, default="1")
 
 # ECG Data Parameters
-parser.add_argument('--prediction-after', type=int, default=24, choices=[24, 72], help='prediction vasso after x hours')
-parser.add_argument('--window-size', type=int, default=1, help='unit is second')
-parser.add_argument('--resp-min-size', type=int, default=1, help='unit is second')
+parser.add_argument('--selected-leads', type=list, default=["I", "II", "V1", "V2", "V3", "V4", "V5", "V6"])
 
 # Model Parameters
 parser.add_argument('--trainer', type=str, default="binary_classification")
-parser.add_argument('--model', type=str, default="ecg_resp_vs_v1") #model name
+parser.add_argument('--model', type=str, default="cnn2d_resnet_v3_small1") 
 parser.add_argument('--enc-model', type=str, default="raw", choices= ['psd', 'sincnet', 'lfcc', 'raw'])
 
 # Visualize / Logging Parameters
@@ -60,13 +58,17 @@ parser.add_argument('--log-iter', type=int, default=10)
 # Test / Store Parameters
 parser.add_argument('--best', default=True, action='store_true')
 parser.add_argument('--last', default=False, action='store_true')
+parser.add_argument('--arrhythmia-test-dir', type=str, default="/nfs/banner/ext01/shared/ecg/data/validation/arrhythmia")
+parser.add_argument('--normal-test-dir', type=str, default="/nfs/banner/ext01/shared/ecg/data/validation/normal")
+
 
 args = parser.parse_args()
 args.output_dim = 2
+args.dir_root =  os.getcwd()
 
-# Dataset Path settings
-with open('./control/path_configs.yaml') as f:
-    path_configs = yaml.safe_load(f)
-    args.data_path = path_configs['data_directory']['data_path']
-    args.dir_root =  os.getcwd()
-    args.dir_result = path_configs['dir_result']
+# # Dataset Path settings
+# with open('./control/path_configs.yaml') as f:
+#     path_configs = yaml.safe_load(f)
+#     args.data_path = path_configs['data_directory']['data_path']
+#     args.dir_root =  os.getcwd()
+#     args.dir_result = path_configs['dir_result']
