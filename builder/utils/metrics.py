@@ -1,3 +1,13 @@
+# Copyright (c) 2021, Kwanhyung Lee. All rights reserved.
+#
+# Licensed under the MIT License; 
+# you may not use this file except in compliance with the License.
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 import os
 import random
 import numpy as np
@@ -47,7 +57,7 @@ class Evaluator(object):
         y_true_multi_array = np.argmax(self.y_true_multi, axis=1)
         f1 = 0
         for i in range(1, 200):
-            threshold = 1. / i
+            threshold = i / 200.0
             temp_output = np.array(self.y_pred_multi[:,1])
             temp_output[temp_output>=threshold] = 1
             temp_output[temp_output<threshold] = 0
