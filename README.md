@@ -1,6 +1,6 @@
 # Arrhythmia_Classification_ECG
 
-This is the repository for "Arrhythmia Classification ECG" from HEART DISEASE AI DATATHON 2021 in South Korea. 
+This is the repository for "Arrhythmia Classification ECG Challenge" from HEART DISEASE AI DATATHON 2021 in South Korea. 
 
 - If you have used our code in your research, please cite:
 ```
